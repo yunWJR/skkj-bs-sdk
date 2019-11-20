@@ -64,7 +64,6 @@ public class HttpUtil {
             }
 
             HttpPost httpPost = new HttpPost(url);
-            client = HttpClients.createDefault();
 
             // 默认 header
             httpPost.setHeader("Content-Type", "application/json;charset=UTF-8");
@@ -85,6 +84,7 @@ public class HttpUtil {
                 httpPost.setEntity(entity);
             }
 
+            client = HttpClients.createDefault();
             HttpResponse resp = client.execute(httpPost);
             if (resp.getStatusLine().getStatusCode() == 200) {
                 rsp.setRsp(EntityUtils.toString(resp.getEntity(), DEFAULT_CHARSET));
@@ -108,49 +108,71 @@ public class HttpUtil {
      * @param param 参数
      * @return
      */
-    public String httpGetWithJson(String url, Map<String, ?> param, Map<String, String> header) {
+    public HttpRsp getRqt(String url, Map<String, String> param, Map<String, String> header) {
+        HttpRsp rsp = new HttpRsp();
+
         CloseableHttpClient client = null;
         try {
             if (url == null || url.trim().length() == 0) {
                 throw new Exception("URL is null");
             }
-            client = HttpClients.createDefault();
-
             if (param != null) {
-                StringBuffer sb = new StringBuffer("?");
-                for (String key : param.keySet()) {
-                    sb.append(key).append("=").append(param.get(key)).append("&");
+                boolean isFirst = true;
+                StringBuilder sb = new StringBuilder();
+                for (Map.Entry<String, String> pEt : param.entrySet()) {
+                    if (StringUtils.isEmpty(pEt.getKey())) {
+                        continue;
+                    }
+
+                    if (isFirst) {
+                        sb.append("?");
+                        isFirst = false;
+                    } else {
+                        sb.append("&");
+                    }
+
+                    sb.append(getEncoder(pEt.getKey()));
+                    sb.append("=");
+                    sb.append(getEncoder(pEt.getValue()));
                 }
-                url = url.concat(sb.toString());
-                url = url.substring(0, url.length() - 1);
+
+                url = url + sb.toString();
             }
+
+            // if (param != null) {
+            //     StringBuffer sb = new StringBuffer("?");
+            //     for (String key : param.keySet()) {
+            //         sb.append(key).append("=").append(param.get(key)).append("&");
+            //     }
+            //     url = url.concat(sb.toString());
+            //     url = url.substring(0, url.length() - 1);
+            // }
+
             HttpGet httpGet = new HttpGet(url);
+
+            httpGet.setHeader("Content-Type", "application/json;charset=UTF-8");
             if (header != null) {
                 for (String hKey : header.keySet()) {
                     httpGet.setHeader(hKey, header.get(hKey));
                 }
             }
 
+            client = HttpClients.createDefault();
             HttpResponse resp = client.execute(httpGet);
             if (resp.getStatusLine().getStatusCode() == 200) {
-                return EntityUtils.toString(resp.getEntity(), DEFAULT_CHARSET);
+                rsp.setRsp(EntityUtils.toString(resp.getEntity(), DEFAULT_CHARSET));
+            } else {
+                rsp.setErr(resp.getStatusLine().getStatusCode(), EntityUtils.toString(resp.getEntity(), DEFAULT_CHARSET));
             }
         } catch (Exception e) {
             e.printStackTrace();
+
+            rsp.setErr(-1, e.getMessage());
         } finally {
             close(client);
         }
-        return null;
-    }
 
-    /**
-     * 执行HTTP GET请求
-     * @param url   url
-     * @param param 参数
-     * @return
-     */
-    public String httpGetWithJson(String url, Map<String, ?> param) {
-        return httpGetWithJson(url, param, null);
+        return rsp;
     }
 
     /**

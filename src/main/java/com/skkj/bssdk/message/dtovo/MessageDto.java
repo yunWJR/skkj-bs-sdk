@@ -1,4 +1,4 @@
-package com.skkj.bssdk.message;
+package com.skkj.bssdk.message.dtovo;
 
 import lombok.Data;
 

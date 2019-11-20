@@ -2,9 +2,10 @@ package com.skkj.bssdk;
 
 import com.skkj.bssdk.auth.AuthO2;
 import com.skkj.bssdk.dtovo.SbsRsp;
-import com.skkj.bssdk.message.MessageDto;
 import com.skkj.bssdk.message.MessageServer;
-import com.skkj.bssdk.message.MessageVo;
+import com.skkj.bssdk.message.dtovo.MessageDto;
+import com.skkj.bssdk.message.dtovo.MessageVo;
+import com.skkj.bssdk.message.dtovo.TemplateVo;
 import com.skkj.bssdk.property.SbsProperty;
 import com.skkj.bssdk.util.HttpUtil;
 
@@ -37,6 +38,7 @@ public class MessageTest {
         dto.getParaMap().put("templateParam", "{code:123321}");
         dto.getParaMap().put("param", "bbca,32123");
 
+        SbsRsp<List<TemplateVo>> list = msg.getTemplateList();
         SbsRsp<MessageVo> vo = msg.sendMessage(dto);
     }
 }
