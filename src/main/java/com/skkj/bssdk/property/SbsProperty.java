@@ -15,9 +15,9 @@ import org.springframework.stereotype.Component;
 public class SbsProperty {
 
     /**
-     * 服务地址 todo 测试数据
+     * 服务地址
      */
-    private String serverHost = "http://127.0.0.1:17820";
+    private String serverHost;
 
     /**
      * 认证参数
@@ -37,13 +37,13 @@ public class SbsProperty {
         private String authType = "Basic";
 
         /**
-         * 认证：用户名 todo 测试数据
+         * 认证：用户名
          */
-        private String username = "MTkuMC41YzQ0YjQ5ZC1lODZlLTQ3NWQtOTUxNy1iNDY2YzBmOWI5ODA=";
+        private String username;
 
         /**
-         * 认证：密码 todo 测试数据
+         * 认证：密码
          */
-        private String password = "cc784e70-03e4-4238-ba4b-74bded8db6d6";
+        private String password;
     }
 }
