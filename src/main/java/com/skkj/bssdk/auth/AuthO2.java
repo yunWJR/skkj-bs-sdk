@@ -1,7 +1,6 @@
 package com.skkj.bssdk.auth;
 
 import cn.hutool.core.lang.TypeReference;
-import com.skkj.bssdk.auth.dtovo.AuthO2Dto;
 import com.skkj.bssdk.auth.dtovo.AuthO2Vo;
 import com.skkj.bssdk.dtovo.SbsRsp;
 import com.skkj.bssdk.exception.SbsException;
@@ -34,14 +33,30 @@ public class AuthO2 {
         HttpUtil httpUtil = new HttpUtil();
         AuthO2 authO2 = new AuthO2(sbsProperty, httpUtil);
 
-        AuthO2Dto dto = new AuthO2Dto();
-        dto.setUsername("MTkuMC41YzQ0YjQ5ZC1lODZlLTQ3NWQtOTUxNy1iNDY2YzBmOWI5ODA=");
-        dto.setPassword("cc784e70-03e4-4238-ba4b-74bded8db6d6");
-        authO2.auth(dto);
+        AuthO2Vo vo = authO2.authValid();
     }
 
-    public SbsRsp<AuthO2Vo> auth(AuthO2Dto dto) {
-        String url = sbsProperty.getServerUrl() + "/auth/oauth/token";
+    /**
+     * 获取成功授权信息
+     * @return
+     */
+    public AuthO2Vo authValid() {
+        SbsRsp<AuthO2Vo> rst = auth();
+        if (rst.isSuc()) {
+            return rst.getData();
+        }
+
+        throw SbsException.cmpEp("授权失败:" + rst.getErrMsg());
+    }
+
+    /**
+     * 授权
+     * @return
+     */
+    public SbsRsp<AuthO2Vo> auth() {
+        SbsProperty.Auth dto = sbsProperty.getAuth();
+
+        String url = sbsProperty.getServerHost() + "/auth/oauth/token";
 
         Map<String, String> header = new HashMap<>();
 
@@ -60,7 +75,7 @@ public class AuthO2 {
 
     // region --private method
 
-    private String getAuthHeader(AuthO2Dto dto) {
+    private String getAuthHeader(SbsProperty.Auth dto) {
         if (dto.getAuthType().toLowerCase().equals("basic")) {
             // Base64(username:password)
             try {
