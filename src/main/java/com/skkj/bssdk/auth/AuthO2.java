@@ -7,7 +7,6 @@ import com.skkj.bssdk.exception.SbsException;
 import com.skkj.bssdk.property.SbsProperty;
 import com.skkj.bssdk.util.HttpRsp;
 import com.skkj.bssdk.util.HttpUtil;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -22,18 +21,32 @@ import java.util.Map;
  */
 @Component
 @Slf4j
-@AllArgsConstructor
+// @AllArgsConstructor
 public class AuthO2 {
     private final SbsProperty sbsProperty;
 
     private final HttpUtil httpUtil;
 
-    public static void main(String[] args) throws Exception {
-        SbsProperty sbsProperty = new SbsProperty();
-        HttpUtil httpUtil = new HttpUtil();
-        AuthO2 authO2 = new AuthO2(sbsProperty, httpUtil);
+    private AuthO2Vo authO2Data;
 
-        AuthO2Vo vo = authO2.authValid();
+    private String authHeader;
+
+    public AuthO2(SbsProperty sbsProperty, HttpUtil httpUtil) {
+        this.sbsProperty = sbsProperty;
+        this.httpUtil = httpUtil;
+    }
+
+    public String getAuthHeader() {
+        if (authHeader == null) {
+            // 重新授权
+            authValid();
+        }
+
+        if (authHeader == null) {
+            throw SbsException.cmpEp("无授权信息:");
+        }
+
+        return authHeader;
     }
 
     /**
@@ -43,10 +56,14 @@ public class AuthO2 {
     public AuthO2Vo authValid() {
         SbsRsp<AuthO2Vo> rst = auth();
         if (rst.isSuc()) {
+            updateAuthO2Data(rst.getData());
+
             return rst.getData();
         }
 
-        throw SbsException.cmpEp("授权失败:" + rst.getErrMsg());
+        updateAuthO2Data(null);
+
+        throw SbsException.cmpEp("授权失败:" + rst.getMsg());
     }
 
     /**
@@ -74,6 +91,17 @@ public class AuthO2 {
     }
 
     // region --private method
+
+    private void updateAuthO2Data(AuthO2Vo authO2Data) {
+        this.authO2Data = authO2Data;
+
+        if (authO2Data == null) {
+            authHeader = null;
+        }
+
+        // bearer db3cf21f-45ca-4c62-8089-978d75e044c6
+        authHeader = authO2Data.getToken_type() + " " + authO2Data.getAccess_token();
+    }
 
     private String getAuthHeader(SbsProperty.Auth dto) {
         if (dto.getAuthType().toLowerCase().equals("basic")) {

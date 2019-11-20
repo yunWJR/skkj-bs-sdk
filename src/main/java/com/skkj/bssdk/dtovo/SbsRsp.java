@@ -18,11 +18,11 @@ public class SbsRsp<T> {
 
     private T data;
 
-    private String errMsg;
+    private String msg;
 
     public SbsRsp(HttpRsp rsp, TypeReference<T> typeReference) {
         this.code = rsp.getHttpCode();
-        this.errMsg = rsp.getErrMsg();
+        this.msg = rsp.getErrMsg();
 
         if (isSuc()) {
             this.data = JSONUtil.toBean(rsp.getRsp(), typeReference, true);
