@@ -4,6 +4,7 @@ import cn.hutool.core.lang.TypeReference;
 import cn.hutool.json.JSONUtil;
 import com.skkj.bssdk.auth.AuthO2;
 import com.skkj.bssdk.dtovo.SbsRsp;
+import com.skkj.bssdk.dtovo.SbsRspStr;
 import com.skkj.bssdk.property.SbsProperty;
 import com.skkj.bssdk.util.HttpRsp;
 import com.skkj.bssdk.util.HttpUtil;
@@ -43,8 +44,24 @@ public class MessageServer {
 
         HttpRsp rsp = httpUtil.postRqt(url, null, header, body);
 
-        SbsRsp<MessageVo> rst = new SbsRsp<>(rsp, new TypeReference<MessageVo>() {
-        });
+        SbsRspStr rspData = new SbsRspStr(rsp);
+
+        // 成功
+        if (rspData.isSuc()) {
+            SbsRsp<MessageVo> rst = JSONUtil.toBean(rspData.getData(), new TypeReference<SbsRsp<MessageVo>>() {
+            }, true);
+
+            return rst;
+        }
+
+        // 授权失败，重新授权
+        if (rspData.isOutAuth()) {
+            authO2.authValid();
+
+            return sendMessage(dto);
+        }
+
+        SbsRsp<MessageVo> rst = new SbsRsp<MessageVo>(rspData.getCode(), rspData.getMsg());
 
         return rst;
     }

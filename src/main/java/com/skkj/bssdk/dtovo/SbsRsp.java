@@ -29,6 +29,16 @@ public class SbsRsp<T> {
         }
     }
 
+    public SbsRsp(int code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public SbsRsp(HttpRsp rsp) {
+        this.code = rsp.getHttpCode();
+        this.msg = rsp.getErrMsg();
+    }
+
     public boolean isSuc() {
         return code == 200;
     }
