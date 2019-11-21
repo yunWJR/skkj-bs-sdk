@@ -63,6 +63,11 @@ public class AuthO2 {
 
         updateAuthO2Data(null);
 
+        // 302 可能为-帐号密码错误/token 机制错误
+        if (rst.getCode() == 302) {
+            rst.setMsg("授权错误，请检查帐号或者授权 token");
+        }
+
         throw SbsException.cmpEp("授权失败:" + rst.getMsg());
     }
 
