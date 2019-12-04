@@ -9,6 +9,7 @@ import com.skkj.bssdk.util.HttpRsp;
 import com.skkj.bssdk.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.Base64;
 import java.util.HashMap;
@@ -85,7 +86,14 @@ public class AuthO2 {
         header.put("Authorization", getAuthHeader(dto));
 
         Map<String, String> param = new HashMap<>();
-        param.put("grant_type", dto.getGrantType());
+
+        if (!StringUtils.isEmpty(dto.getGrantType())) {
+            param.put("grant_type", dto.getGrantType());
+        }
+
+        if (!StringUtils.isEmpty(dto.getScope())) {
+            param.put("scope", dto.getScope());
+        }
 
         HttpRsp rsp = httpUtil.postRqt(url, param, header, null);
 

@@ -32,6 +32,11 @@ public class SbsProperty {
         private String grantType = "client_credentials";
 
         /**
+         * scope：xxx
+         */
+        private String scope = "";
+
+        /**
          * 认证类型：默认 Basic
          */
         private String authType = "Basic";
