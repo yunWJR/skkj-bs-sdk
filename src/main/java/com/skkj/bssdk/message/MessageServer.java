@@ -38,7 +38,7 @@ public class MessageServer {
      * @return
      */
     public SbsRspStr sendMessageOrg(MessageDto dto) {
-        String url = sbsProperty.getServerHost() + "/msg/v1/message";
+        String url = sbsProperty.getServerHost() + "/msg/v1/message/send";
 
         Map<String, String> header = new HashMap<>();
 
