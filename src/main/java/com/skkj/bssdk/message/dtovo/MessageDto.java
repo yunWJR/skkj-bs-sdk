@@ -18,9 +18,14 @@ public class MessageDto {
     private Long templateId;
 
     /**
-     * 对象列表：（注意最大对象限制）
+     * 对象列表：已废弃
      */
-    private List<String> targetList;
+    // private List<String> targetList;
+
+    /**
+     * 对象列表
+     */
+    private List<MessageTargetDto> targets;
 
     /**
      * 请求参数

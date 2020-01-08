@@ -11,16 +11,33 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class MessageVo {
+    /**
+     * 消息 ID
+     */
     private Long id;
 
+    /**
+     * createTime
+     */
     private Long createTime;
 
+    /**
+     * 模板 id
+     */
+    private Long templateId;
+
+    /**
+     * 模板默认通道
+     */
     private Long defChannelId;
 
     /**
-     * 执行模式：1-默认优先、2-轮询、3-全部
+     * 执行模式：1-默认优先、2-通道轮询、3-全部通道、4-所有类型,5-类型轮询
      */
     private Integer executeMode;
 
-    private Long templateId;
+    /**
+     * 状态
+     */
+    private Integer status;
 }
