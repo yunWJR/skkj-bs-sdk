@@ -18,7 +18,7 @@ public class MessageTargetDto {
 
     /**
      * 通道类型-推送对象 map
-     * 通道类型：1、EMAIL_SMTP；2、SMS；3、WC_MP
+     * 通道类型：1、EMAIL_SMTP；2、SMS；3、WC_MP；4、NOTI
      */
-    private Map<Integer, String> typeTarget;
+    private Map<Integer, MessageChannelTargetDto> typeTarget;
 }

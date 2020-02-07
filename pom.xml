@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.yunwjr</groupId>
     <artifactId>bs-sdk</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <name>bs-sdk</name>
     <description>sdk for skkj basic server</description>
     <url>https://github.com/yunWJR/skkj-bs-sdk</url>
