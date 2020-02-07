@@ -19,5 +19,5 @@ public class MessageChannelTargetDto {
     /**
      * 模板通道ID-推送对象 map
      */
-    private Map<Long, String> templateChanelIdTarget;
+    private Map<Long, String> templateChannelIdTarget;
 }
