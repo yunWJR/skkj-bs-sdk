@@ -1,6 +1,7 @@
 package com.skkj.bssdk.message.dtovo;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,16 +14,12 @@ import java.util.Map;
  */
 
 @Data
+@NoArgsConstructor
 public class MessageDto {
     /**
      * 模板 id
      */
     private Long templateId;
-
-    /**
-     * 对象列表：已废弃
-     */
-    // private List<String> targetList;
 
     /**
      * 对象列表

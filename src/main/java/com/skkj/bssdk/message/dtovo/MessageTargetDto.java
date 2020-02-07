@@ -1,6 +1,7 @@
 package com.skkj.bssdk.message.dtovo;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,11 +12,17 @@ import java.util.Map;
  */
 
 @Data
+@NoArgsConstructor
 public class MessageTargetDto {
     /**
      * 对象名称，最大100
      */
     private String name;
+
+    /**
+     * 默认对象
+     */
+    private String defTarget;
 
     /**
      * 通道类型-推送对象 map
