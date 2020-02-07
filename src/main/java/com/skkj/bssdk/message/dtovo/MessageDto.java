@@ -2,6 +2,8 @@ package com.skkj.bssdk.message.dtovo;
 
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,4 +33,23 @@ public class MessageDto {
      * 请求参数
      */
     private Map<String, Object> paraMap;
+
+    public MessageDto(Long templateId) {
+        this.templateId = templateId;
+        this.targets = new ArrayList<>();
+        this.paraMap = new HashMap<>();
+    }
+
+    /**
+     * 添加参数
+     * @param key
+     * @param value
+     */
+    public void addPara(String key, String value) {
+        if (this.paraMap == null) {
+            this.paraMap = new HashMap<>();
+        }
+
+        this.paraMap.put(key, value);
+    }
 }

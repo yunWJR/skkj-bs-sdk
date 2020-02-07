@@ -2,6 +2,7 @@ package com.skkj.bssdk.message.dtovo;
 
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,4 +21,27 @@ public class MessageChannelTargetDto {
      * 模板通道ID-推送对象 map
      */
     private Map<Long, String> templateChannelIdTarget;
+
+    public MessageChannelTargetDto(String defTarget) {
+        this.defTarget = defTarget;
+        this.templateChannelIdTarget = new HashMap<>();
+    }
+
+    /**
+     * 添加参数
+     * @param tmpChannelId
+     * @param target
+     */
+    public void addTarget(Long tmpChannelId, String target) {
+        if (tmpChannelId == null) {
+            this.defTarget = target;
+            return;
+        }
+
+        if (this.templateChannelIdTarget == null) {
+            this.templateChannelIdTarget = new HashMap<>();
+        }
+
+        this.templateChannelIdTarget.put(tmpChannelId, target);
+    }
 }
